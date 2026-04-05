@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Scan = require('../models/Scan');
+const detectFraud = require("../utils/fraudDetector");
 
 // 🔥 Detection patterns
 const patterns = {
