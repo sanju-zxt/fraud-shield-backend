@@ -59,10 +59,10 @@ function detectFraud(text) {
   else if (score >= 40) verdict = "SUSPICIOUS";
 
   return {
-    score,
-    verdict,
-    keywords: foundKeywords
-  };
+  score: 999,
+  verdict: "TEST WORKING",
+  keywords: ["render-check"]
+};
 }
 
 module.exports = detectFraud;
