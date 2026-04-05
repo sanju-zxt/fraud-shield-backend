@@ -37,21 +37,22 @@ function detectFraud(text) {
 
   const lowerText = text.toLowerCase();
 
-  // Keyword scoring (stronger)
+  // 🔥 STRONGER KEYWORD SCORING
   fraudKeywords.forEach(word => {
     if (lowerText.includes(word)) {
-      score += 10;   // increased
+      score += 10;
       foundKeywords.push(word);
     }
   });
 
-  // Pattern scoring (stronger)
+  // 🔥 STRONGER PATTERN SCORING
   scamPatterns.forEach(pattern => {
     if (pattern.test(text)) {
-      score += 25;   // increased
+      score += 25;
     }
   });
 
+  // Cap score
   if (score > 100) score = 100;
 
   let verdict = "SAFE";
@@ -59,10 +60,10 @@ function detectFraud(text) {
   else if (score >= 40) verdict = "SUSPICIOUS";
 
   return {
-  score: 999,
-  verdict: "TEST WORKING",
-  keywords: ["render-check"]
-};
+    score,
+    verdict,
+    keywords: foundKeywords
+  };
 }
 
 module.exports = detectFraud;
