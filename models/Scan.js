@@ -5,7 +5,10 @@ const scanSchema = new mongoose.Schema({
   status: String,
   score: Number,
   type: String,
-  count: { type: Number, default: 1 },
+  count: {
+    type: Number,
+    default: 1
+  },
   createdAt: {
     type: Date,
     default: Date.now
