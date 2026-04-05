@@ -5,13 +5,13 @@ require("dotenv").config();
 
 const app = express();
 
-// ✅ CORS FIX (IMPORTANT)
+// ✅ FIX CORS
 app.use(cors());
 
 // Middleware
 app.use(express.json());
 
-// Routes
+// ✅ IMPORTANT: ROUTE MOUNT
 const scanRoutes = require("./routes/scanRoutes");
 app.use("/api/scan", scanRoutes);
 
@@ -20,12 +20,12 @@ app.get("/", (req, res) => {
   res.send("Fraud Shield API Running 🚀");
 });
 
-// MongoDB connection
+// MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("DB Connected ✅"))
   .catch(err => console.log("DB Error:", err));
 
-// Start server
+// Server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
