@@ -4,30 +4,44 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-
-// ✅ FIX CORS
 app.use(cors());
-
-// Middleware
 app.use(express.json());
 
-// ✅ IMPORTANT: ROUTE MOUNT
-const scanRoutes = require("./routes/scanRoutes");
-app.use("/api/scan", scanRoutes);
-
-// Root route
+// ROOT
 app.get("/", (req, res) => {
   res.send("Fraud Shield API Running 🚀");
 });
 
-// MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("DB Connected ✅"))
-  .catch(err => console.log("DB Error:", err));
+// MODEL
+const ReportSchema = new mongoose.Schema({
+  title: String,
+  description: String,
+  type: String,
+});
 
-// Server
-const PORT = process.env.PORT || 5000;
+const Report = mongoose.model("Report", ReportSchema);
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// GET REPORTS
+app.get("/api/reports", async (req, res) => {
+  try {
+    const data = await Report.find();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ADD TEST DATA
+app.get("/api/reports/test", async (req, res) => {
+  const r = await Report.create({
+    title: "UPI Fraud",
+    description: "Suspicious transaction",
+    type: "UPI",
+  });
+  res.json(r);
+});
+
+mongoose.connect(process.env.MONGO_URI).then(() => {
+  console.log("DB Connected");
+  app.listen(5000, () => console.log("Server running"));
 });
